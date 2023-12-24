@@ -1,0 +1,153 @@
+{% extends 'base.html' %}
+{% block title %}home{% endblock title %}
+
+{% block main %}
+<!-- this is main block seciton -->
+<main>
+    <div class="container" style="border: 1px solid #000;">
+        <div class="m-5">
+            {% if num_dynamic %}
+            <form method="post" action="{% url 'homeView' %}">
+                {% csrf_token %}
+                <input id="numDynamic" name="numDynamic" value="{{num_dynamic}}" type="hidden"/>
+                <div 
+                class="row"
+                id="scheduleForm"
+                >
+                {% for p in total %}
+                    <!-- process-group -->
+                    <div class="col-md-4">
+                        <div class="mb-3">
+                            <label for="process_{{p.id}}" class="form-label">Process {{p.id}}</label>
+                            <input  type="hidden" name="process_{{p.id}}" value="{{p.process_name}}">
+                            <input required readonly disabled value="{{p.process_name}}" type="text" class="form-control" id="process_{{p.id}}" aria-describedby="emailHelp">
+                        </div>
+                        <div class="mb-3">
+                            <label for="at_{{p.id}}" class="form-label">AT {{p.id}}</label>
+                            <input required type="number" class="form-control" value="{{p.at_value}}" name="at_{{p.id}}" id="at_{{p.id}}">
+                        </div>
+                        <div class="mb-3">
+                            <label for="cbt_{{p.id}}" class="form-label">CBT {{p.id}}</label>
+                            <input required type="number" class="form-control" value="{{p.cbt_value}}" name="cbt_{{p.id}}" id="cbt_{{p.id}}">
+                        </div>
+                    </div>
+                    <!-- process-group -->
+                {% endfor %}
+                <div id="schedulingAlgorithmContainer" style="display: flex; align-items: center;flex-direction: column" class="mt-5">
+                    <select id="schedulingAlgorithm" name="schedulingAlgorithm" class="form-select" aria-label="Default select example">
+                        <option id="default-opt" value="" selected>Select Scheduling Algorithm</option>
+                        <option value="fcfs">FCFS</option>
+                        <option value="spn">SPN</option>
+                        <option value="hrrn">HRRN</option>
+                        <option id='roundRobin' value="roundRobin">Round Robin</option>
+                    </select>
+                </div>
+                <div style="display: flex; justify-content: center;">
+                    <button type="submit" class="btn btn-primary w-25 m-3">
+                        <i class="bi bi-send"></i>
+                        Submit
+                    </button>
+                    <button type="button" class="btn btn-warning w-25 m-3" onclick="processHandeler()">
+                        <i class="bi bi-plus-circle"></i>
+                        Add
+                    </button>
+                    {% comment %} <button id='refreshButton' type="button" class="btn btn-secondary w-25 m-3">
+                        <i class="bi bi-repeat"></i>
+                        Refresh Page
+                    </button> {% endcomment %}
+                </div>
+            </form>
+                {% else %}
+                <form method="post" action="{% url 'homeView' %}">
+                    {% csrf_token %}
+                    <input id="numDynamic" name="numDynamic" value="3" type="hidden"/>
+                    <div 
+                    class="row"
+                    id="scheduleForm"
+                    >
+                        <!-- process-group -->
+                        <div class="col-md-4">
+                            <div class="mb-3">
+                                <label for="process_1" class="form-label">Process 1</label>
+                                <input  type="hidden" name="process_1" value="P1">
+                                <input required readonly disabled value="P1" type="text" class="form-control" id="process_1" aria-describedby="emailHelp">
+                            </div>
+                            <div class="mb-3">
+                                <label for="at_1" class="form-label">AT 1</label>
+                                <input required type="number" class="form-control" name="at_1" id="at_1">
+                            </div>
+                            <div class="mb-3">
+                                <label for="cbt_1" class="form-label">CBT 1</label>
+                                <input required type="number" class="form-control" name="cbt_1" id="cbt_1">
+                            </div>
+                        </div>
+                        <!-- process-group -->
+    
+                        <!-- process-group -->
+                        <div class="col-md-4">
+                            <div class="mb-3">
+                                <label for="process_2" class="form-label">Process 2</label>
+                                <input type="hidden" name="process_2" value="P2">
+                                <input required readonly disabled value="P2" type="text" class="form-control" id="process_2" aria-describedby="emailHelp">
+                            </div>
+                            <div class="mb-3">
+                                <label for="at_2" class="form-label">AT 2</label>
+                                <input required type="number" class="form-control" name="at_2" id="at_2">
+                            </div>
+                            <div class="mb-3">
+                                <label for="cbt_2" class="form-label">CBT 2</label>
+                                <input required type="number" class="form-control" name="cbt_2" id="cbt_2">
+                            </div>
+                        </div>
+                        <!-- process-group -->
+                        
+                    
+                        <!-- process-group -->
+                        <div class="col-md-4">
+                            <div class="mb-3">
+                                <label for="process_3" class="form-label">Process 3</label>
+                                <input type="hidden" name="process_3" value="P3">
+                                <input required readonly disabled value="P3" type="text" class="form-control" id="process_3" aria-describedby="emailHelp">
+                            </div>
+                            <div class="mb-3">
+                                <label for="at_3" class="form-label">AT 3</label>
+                                <input required type="number" class="form-control" name="at_3" id="at_3">
+                            </div>
+                            <div class="mb-3">
+                                <label for="cbt_3" class="form-label">CBT 3</label>
+                                <input required type="number" class="form-control" name="cbt_3" id="cbt_3">
+                            </div>
+                        </div>
+                        <!-- process-group -->
+    
+                    </div>
+                    <div id="schedulingAlgorithmContainer" style="display: flex; align-items: center;flex-direction: column" class="mt-5">
+                        <select id="schedulingAlgorithm" name="schedulingAlgorithm" class="form-select" aria-label="Default select example">
+                            <option id="default-opt" value="" selected>Select Scheduling Algorithm</option>
+                            <option value="fsfc">FCFS</option>
+                            <option value="spn">SPN</option>
+                            <option value="hrrn">HRRN</option>
+                            <option id='roundRobin-opt' value="roundRobin">Round Robin</option>
+                        </select>
+                    </div>
+                    <div style="display: flex; justify-content: center;">
+                        <button type="submit" class="btn btn-primary w-25 m-3">
+                            <i class="bi bi-send"></i>
+                            Submit
+                        </button>
+                        <button type="button" class="btn btn-warning w-25 m-3" onclick="processHandeler()">
+                            <i class="bi bi-plus-circle"></i>
+                            Add
+                        </button>
+                        {% comment %} <button id='refreshButton' type="button" class="btn btn-secondary w-25 m-3">
+                            <i class="bi bi-repeat"></i>
+                            Refresh Page
+                        </button> {% endcomment %}
+                    </div>
+                </form>
+            {% endif %}
+
+        </div>
+    </div>
+</main>
+{% endblock %}

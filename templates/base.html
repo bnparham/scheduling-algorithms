@@ -1,0 +1,28 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>
+        {% block title %}{% endblock title %}
+    </title>
+    <!-- this is header urls -->
+    {% include 'includes/header_urls.html' %}
+</head>
+<body>
+    <!-- this is header section -->
+    {% include 'includes/header.html' %}
+
+    {% block main %}
+        <!-- this is main block seciton -->
+    {% endblock %}
+
+    <!-- this is footer section -->
+    {% include 'includes/footer.html' %}
+
+
+    <!-- this is footer urls -->
+    {% include 'includes/footer_urls.html' %}
+
+</body>
+</html>
