@@ -11,7 +11,7 @@ const addProcess = (count) => {
         <div class="mb-3">
             <label for="process_${count}" class="form-label">Process ${count}</label>
             <input type="hidden" name="process_${count}" value="P${count}">
-            <input required readonly disabled type="text" class="form-control" id="process_${count}" aria-describedby="emailHelp">
+            <input required readonly disabled value="P${count}" type="text" class="form-control" id="process_${count}" aria-describedby="emailHelp">
         </div>
         <div class="mb-3">
             <label for="at_${count}" class="form-label">AT ${count}</label>
