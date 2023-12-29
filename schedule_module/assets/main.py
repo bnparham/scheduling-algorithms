@@ -1,7 +1,9 @@
 import pandas as pd
 from tabulate import tabulate
 import matplotlib.pyplot as plt
+import matplotlib.patches as mpatches
 import numpy as np
+import random
 
 class OS:
     def __init__(self,data):
@@ -428,6 +430,11 @@ class OS:
     def make_plot(self,Process,Start,End,At,plotTitle):
         # Create a figure and axis
         fig, ax = plt.subplots(figsize=(10, 5))
+        custom_legends_dict = {}
+        custom_legends_li= []
+        colors = ['red','blue','green','yellow','gray','pink','orange']
+        AVG_watingTime = 0
+
 
         # Plot each linear graph
         for i in range(len(Process)):
@@ -445,6 +452,11 @@ class OS:
             # # # Draw a dotted line from the start point to the x-axis
             ax.vlines(start_point, ymin=0, ymax=i, colors='grey', linestyles='dotted')
             ax.vlines(end_point, ymin=0, ymax=i, colors='grey', linestyles='dotted')
+
+            # make AVG time legend
+            custom_legends_dict[i] = mpatches.Patch(color=random.choice(colors), label=f' {process_name} = {start_point} - {at_point} = {start_point-at_point}')
+            custom_legends_li.append(custom_legends_dict[i])
+            AVG_watingTime += start_point-at_point
             
         # setting x-axis scale
         plt.xticks(range(0, End[-1]+10))
@@ -454,12 +466,14 @@ class OS:
 
         # Set labels and legend
         ax.set_title(plotTitle)
-        ax.set_xlabel('Time')
+        ax.set_xlabel(f'Time | Avg Waiting Time = {AVG_watingTime/len(Process)}')
         ax.set_ylabel('Process')
         ax.set_yticks(range(len(Process)))
         ax.set_yticklabels(Process)
-        ax.legend()
-
+        ax.legend(loc=1) 
+        ax2 = ax.twinx()
+        ax2.legend(handles = custom_legends_li, loc=4, title="Waiting Time Per Process")
+ 
         # Show the plot
         plt.show()
 
