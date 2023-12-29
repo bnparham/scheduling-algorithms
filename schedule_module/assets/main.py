@@ -474,7 +474,7 @@ class OS:
 
         # Set labels and legend
         ax.set_title(plotTitle)
-        ax.set_xlabel(f'Time | Avg Waiting Time = {AVG_watingTime/len(Process)} | Avg Total Time = {AVG_totalTime/len(Process)}')
+        ax.set_xlabel(f'Time | Avg Waiting Time = {round(AVG_watingTime/len(Process),2)} | Avg Total Time = {round(AVG_totalTime/len(Process),2)}')
         ax.set_ylabel('Process')
         ax.set_yticks(range(len(Process)))
         ax.set_yticklabels(Process)
