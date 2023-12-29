@@ -430,10 +430,13 @@ class OS:
     def make_plot(self,Process,Start,End,At,plotTitle):
         # Create a figure and axis
         fig, ax = plt.subplots(figsize=(10, 5))
-        custom_legends_dict = {}
-        custom_legends_li= []
+        wt_dict = {}
+        wt_li= []
+        tt_dict = {}
+        tt_li= []
         colors = ['red','blue','green','yellow','gray','pink','orange']
         AVG_watingTime = 0
+        AVG_totalTime = 0
 
 
         # Plot each linear graph
@@ -453,10 +456,15 @@ class OS:
             ax.vlines(start_point, ymin=0, ymax=i, colors='grey', linestyles='dotted')
             ax.vlines(end_point, ymin=0, ymax=i, colors='grey', linestyles='dotted')
 
-            # make AVG time legend
-            custom_legends_dict[i] = mpatches.Patch(color=random.choice(colors), label=f' {process_name} = {start_point} - {at_point} = {start_point-at_point}')
-            custom_legends_li.append(custom_legends_dict[i])
+            # make waiting time legend
+            wt_dict[i] = mpatches.Patch(color=random.choice(colors), label=f' {process_name} = {start_point} - {at_point} = {start_point-at_point}')
+            wt_li.append(wt_dict[i])
             AVG_watingTime += start_point-at_point
+
+            # make total time legend
+            tt_dict[i] = mpatches.Patch(color=random.choice(colors), label=f' {process_name} = {end_point} - {at_point} = {end_point-at_point}')
+            tt_li.append(tt_dict[i])
+            AVG_totalTime += end_point-at_point
             
         # setting x-axis scale
         plt.xticks(range(0, End[-1]+10))
@@ -466,13 +474,15 @@ class OS:
 
         # Set labels and legend
         ax.set_title(plotTitle)
-        ax.set_xlabel(f'Time | Avg Waiting Time = {AVG_watingTime/len(Process)}')
+        ax.set_xlabel(f'Time | Avg Waiting Time = {AVG_watingTime/len(Process)} | Avg Total Time = {AVG_totalTime/len(Process)}')
         ax.set_ylabel('Process')
         ax.set_yticks(range(len(Process)))
         ax.set_yticklabels(Process)
         ax.legend(loc=1) 
         ax2 = ax.twinx()
-        ax2.legend(handles = custom_legends_li, loc=4, title="Waiting Time Per Process")
+        ax3 = ax.twinx()
+        ax2.legend(handles = wt_li, loc=4, title="Waiting Time Per Process")
+        ax3.legend(handles = tt_li, loc=2, title="Total Time Per Process")
  
         # Show the plot
         plt.show()
