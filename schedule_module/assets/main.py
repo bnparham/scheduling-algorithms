@@ -9,11 +9,15 @@ class OS:
     def __init__(self,data):
         self.data = data
     def FCFS(self):
+        data = self.data
+        data = data.sort_values(by=['AT'])
+        data.reset_index(inplace=True, drop=True)
+        print(data)
         Process = []
         Start = []
         End = []
         At = []
-        for index, row in self.data.iterrows():
+        for index, row in data.iterrows():
             process = row['Process']
             at = row['AT']
             cbt = row['CBT']

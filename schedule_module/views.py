@@ -34,8 +34,6 @@ class HomeView(View) :
                 'cbt_value': cbt_value
             })
 
-            print(total)
-
         os = OS(
                 pd.DataFrame(
                     {"Process" : process_li,
