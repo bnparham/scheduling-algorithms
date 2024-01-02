@@ -461,11 +461,13 @@ class OS:
             ax.vlines(end_point, ymin=0, ymax=i, colors='grey', linestyles='dotted')
 
             # make waiting time legend
+            #TODO : Fix Calculation for HRRN
             wt_dict[i] = mpatches.Patch(color=random.choice(colors), label=f' {process_name} = {start_point} - {at_point} = {start_point-at_point}')
             wt_li.append(wt_dict[i])
             AVG_watingTime += start_point-at_point
 
             # make total time legend
+            #TODO : Fix Calculation for HRRN
             tt_dict[i] = mpatches.Patch(color=random.choice(colors), label=f' {process_name} = {end_point} - {at_point} = {end_point-at_point}')
             tt_li.append(tt_dict[i])
             AVG_totalTime += end_point-at_point
